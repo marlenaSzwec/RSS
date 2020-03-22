@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+  <title>Rss feed reader</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>Rss feed reader</h1>
+<form action="#" th:action="@{/rssFeed}" th:object="${rssFeed}" method="post">
+  <p>Rss url: <input type="text" id="rssUrlField" th:field="*{rss}"/></p>
+  <p>Email: <input type="text" th:field="*{email}"/></p>
+  <div style="display: block;">
+    <p><input type="submit" value="Save"/></p></div>
+</form>
+<form th:action="@{/rssFeed/send}">
+  <button class="btn btn-primary" type="submit" th:name="email" th:value="${rssFeed.email}">Send</button>
+</form>
+<div style="display: inline;">
+  <div style="overflow: scroll; width: 700px;height: 700px;background: aliceblue;float: left;">
+    <p id="preview" th:utext="${preview}" name="preview"></p></div>
+  <div>
+    <table>
+      <tr th:each="feed : ${feeds}">
+        <td>
+          <p th:text="${feed.rss}" style="float: left">
+        </td>
+        <td>
+          <form action="#" th:action="@{'/rssFeed/{id}'(id=${feed.id})}" method="post">
+            <input type="hidden" name="email" th:value="${feed.email}"/>
+            <button type="submit" class="close" aria-label="Delete">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </form>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<p th:text="${rssFeed.content}">value</p>
+</body>
+</html>
